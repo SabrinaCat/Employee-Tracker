@@ -3,12 +3,16 @@ DROP DATABASE IF EXISTS employee_tracking;
 CREATE database employee_tracking;
 -- use db we created
 USE employee_tracking;
-
+-- create department table
 create table DEPARTMENTS (
-    id int auto_increment not null primary key,
+    id int not null primary key,
     department_name Varchar (30) not null,
     manager_name varchar (20)
-)
+) 
+-- populate with sample data
+insert into departments (id, department_name, manager_name)
+values (1, 'Human Resources', 'Pam Poovey') (2, )
+
 
 CREATE table ROLES (
 id int not null auto_increment PRIMARY KEY,
