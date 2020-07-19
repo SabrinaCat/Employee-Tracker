@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
+//create mysql connection on local device
 const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -28,9 +28,8 @@ connection.connect(function(err) {
   console.log("connected as id " + connection.threadId);
 });
 
-// Start our server so that it can begin listening to client requests.
+// Start our server to listen to our requests
 app.listen(PORT, function() {
-  // Log (server-side) when our server has started
   console.log("Server listening on: http://localhost:" + PORT);
 });
 
