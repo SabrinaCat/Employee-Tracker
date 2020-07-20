@@ -1,7 +1,7 @@
-
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-
+const console = require("console.table");
+const { start } = require("repl");
 
 //set the port
 const PORT = process.env.PORT || 8080;
@@ -20,9 +20,26 @@ connection.connect(function(err) {
     console.error("error connecting: " + err.stack);
     return;
   }
-
-  console.log("connected as id " + connection.threadId);
+  start();
 });
+//function to start user prompt questions
+function start() {
+    inquirer
+        .prompt({
+            name: "whatAction",
+            type: "list",
+            message: "What would you like to do?",
+            choices: [
+                "View all departments",
+                "View all roles",
+                "View all employees",
+                "Add department",
+                "Add role",
+                "Add employee",
+                "Update employee role",
+                "Exit"
+            ]
+        })
 
 // Start our server to listen to our requests
 app.listen(PORT, function() {
