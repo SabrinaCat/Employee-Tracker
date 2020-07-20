@@ -72,7 +72,8 @@ function addDepartment() {
             type: "input",
             message: "What department would you like to add?"
         }
-    ])// wait for user input, then use input to create new table row
+    ])
+    // take user input and use input to create a new table row
         .then(function (answer) {
             connection.query(
                 "INSERT INTO department SET ?",
@@ -85,7 +86,62 @@ function addDepartment() {
                     start();
                 }
             );
+            
+function addRole() {
+    inquirer.prompt([
+        {
+            name: "newRoleTitle",
+            type: "input",
+            message: "What role would you like to add?"
+        },
+        {
+            name: "newRoleSalary",
+            type: "input",
+            message: "What salary will this role have?",
+            validate: function (value) {
+                if (isNaN(value) === false || value > 999999.99) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        {
+            name: "newRoleDept",
+            type: "list",
+            message: "Which department shall I apply this role to?",
+            choices: [
+                "Human Resources",
+                "Accounting",
+                "Research",
+                "Daily Operations",
+                "*Top Secret*"
+            ]
+        }
+    ])
+    //get id from department name
+    .then(function (answer) {
+        connection.query("SELECT id FROM department WHERE name = ?",
+            [answer.newRoleDept], function (err, results) {
+                if (err) throw err;
+                let newRoleDeptId = results[0].id;
 
+                connection.query(
+                    "INSERT INTO role SET ?",
+                    {
+                        title: answer.newRoleTitle,
+                        salary: answer.newRoleSalary,
+                        department_id: newRoleDeptId
+                    },
+                    function (err) {
+                        if (err) throw err;
+                        console.log("Your role has been accepted!");
+                        start();
+                    }
+                );
+            }
+        );
+    });
+}
 // Start our server to listen to our requests
 app.listen(PORT, function() {
   console.log("Server listening on: http://localhost:" + PORT);
