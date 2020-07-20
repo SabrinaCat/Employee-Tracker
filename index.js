@@ -40,6 +40,22 @@ function start() {
                 "Exit"
             ]
         })
+//functions for user options
+function viewDepartments() {
+    connection.query("SELECT * FROM department", function (err, results) {
+        if (err) throw err;
+        console.table(results);
+        start();
+    })
+}
+
+function viewRoles() {
+    connection.query("SELECT * FROM role", function (err, results) {
+        if (err) throw err;
+        console.table(results);
+        start();
+    })
+}
 
 // Start our server to listen to our requests
 app.listen(PORT, function() {
