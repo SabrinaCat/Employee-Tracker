@@ -4,6 +4,7 @@
   "description": "A Content Management System for pulling department, employee, and salary data.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +19,6 @@
   },
   "homepage": "https://github.com/SabrinaCat/Employee-Tracker#readme",
   "dependencies": {
-    "express": "^4.17.1",
     "inquirer": "^7.3.2",
     "mysql": "^2.18.1"
   }
