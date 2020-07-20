@@ -42,7 +42,7 @@ function start() {
         })
 //functions for user options
 function viewDepartments() {
-    connection.query("SELECT * FROM department", function (err, results) {
+    connection.query("SELECT * FROM DEPARTMENTS", function (err, results) {
         if (err) throw err;
         console.table(results);
         start();
@@ -50,7 +50,7 @@ function viewDepartments() {
 }
 
 function viewRoles() {
-    connection.query("SELECT * FROM role", function (err, results) {
+    connection.query("SELECT * FROM ROLES", function (err, results) {
         if (err) throw err;
         console.table(results);
         start();
@@ -58,7 +58,7 @@ function viewRoles() {
 }
 
 function viewEmployees() {
-    connection.query("SELECT * FROM employee", function (err, results) {
+    connection.query("SELECT * FROM EMPLOYEES", function (err, results) {
         if (err) throw err;
         console.table(results);
         start();
@@ -76,7 +76,7 @@ function addDepartment() {
     // take user input and use input to create a new table row
         .then(function (answer) {
             connection.query(
-                "INSERT INTO department SET ?",
+                "INSERT INTO DEPARTMENTS SET ?",
                 {
                     name: answer.newDept
                 },
@@ -120,13 +120,13 @@ function addRole() {
     ])
     //get id from department name
     .then(function (answer) {
-        connection.query("SELECT id FROM department WHERE name = ?",
+        connection.query("SELECT id FROM DEPARTMENTS WHERE name = ?",
             [answer.newRoleDept], function (err, results) {
                 if (err) throw err;
                 let newRoleDeptId = results[0].id;
 
                 connection.query(
-                    "INSERT INTO role SET ?",
+                    "INSERT INTO ROLES SET ?",
                     {
                         title: answer.newRoleTitle,
                         salary: answer.newRoleSalary,
@@ -141,6 +141,82 @@ function addRole() {
             }
         );
     });
+}
+function addEmployee() {
+    inquirer.prompt([
+        {
+            name: "newFirstName",
+            type: "input",
+            message: "What is the employee's first name?"
+        },
+        {
+            name: "newLastName",
+            type: "input",
+            message: "What is the employee's last name?"
+        },
+        {
+            name: "newEmpRole",
+            type: "list",
+            message: "What is the employee's role?",
+            choices: [
+                "Human Resources Officer",
+                "Accountant",
+                "Gadget Developer",
+                "Office Worker",
+                "Secret Agent"
+            ]
+        },
+        {
+            name: "newEmpManager",
+            type: "list",
+            message: "Who is the employee's manager?",
+            choices: [
+                "Archer",
+                "Poovey",
+                "Figgis",
+                "None"
+            ]
+        }
+        //apply new employee data to the coninciding tables
+    ]).then(function (answer) {
+        connection.query("SELECT id FROM ROLES WHERE title = ?",
+            [answer.newEmpRole], function (err, results) {
+                if (err) throw err;
+                let newEmpRoleId = results[0].id;
+                // this function is like addRole but also needs if/else statement to handle case of no manager
+                if (answer.manager = "None") {
+                    insertEmployee(answer, newEmpRoleId, null);
+                } else {
+                    connection.query("SELECT id FROM EMPLOYEES WHERE last_name = ?",
+                        [answer.newEmpManager], function (err, results) {
+                            if (err) throw err;
+                            let newEmpManagerId = results[0].id;
+
+                            insertEmployee(employeeData, newEmpRoleId, newEmpManagerId);
+                        }
+                    );
+                }
+            }
+        )
+    })
+}
+
+//minimized clutter by creating a seperate function to handle inserting new employee data
+function insertEmployee(employeeData, newEmpRoleId, newEmpManagerId) {
+    connection.query(
+        "INSERT INTO EMPLOYEES SET ?",
+        {
+            first_name: employeeData.newFirstName,
+            last_name: employeeData.newLastName,
+            role_id: newEmpRoleId,
+            manager_id: newEmpManagerId
+        },
+        function (err) {
+            if (err) throw err;
+            console.log("Your new employee was added successfully");
+            start();
+        }
+    );
 }
 // Start our server to listen to our requests
 app.listen(PORT, function() {
