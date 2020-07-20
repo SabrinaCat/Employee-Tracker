@@ -21,7 +21,7 @@ department_id int not null,  -- will import from departments table
 FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(id)
 );
 insert into ROLES (title, salary, department_id)
-values ('Human Resources', 60000.00,1), ('Accounting', 60000.00, 2), ('Research and Dev', 40000.00, 3), ('Office Worker', 45000.00, 4), ('Secret Agent', 120000.00, 5)
+values ('Human Resources Officer', 60000.00,1), ('Accountant', 60000.00, 2), ('Gadget Researcher', 40000.00, 3), ('Office Worker', 45000.00, 4), ('Secret Agent', 120000.00, 5)
 
 create table EMPLOYEES (
    id int not null auto_increment primary key,
