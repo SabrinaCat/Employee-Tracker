@@ -40,6 +40,34 @@ function start() {
                 "Exit"
             ]
         })
+        .then(function (answer) {
+            if (answer.whatAction === "View all departments") {
+                viewDepartments();
+            }
+            else if (answer.whatAction === "View all roles") {
+                viewRoles();
+            }
+            else if (answer.whatAction === "View all employees") {
+                viewEmployees();
+            }
+            else if (answer.whatAction === "Add department") {
+                addDepartment();
+            }
+            else if (answer.whatAction === "Add role") {
+                addRole();
+            }
+            else if (answer.whatAction === "Add employee") {
+                addEmployee();
+            }
+            else if (answer.whatAction === "Update employee role") {
+                updateRole();
+            }
+            else {
+                connection.end();
+            }
+        });
+    }
+        
 //functions for user options
 function viewDepartments() {
     connection.query("SELECT * FROM DEPARTMENTS", function (err, results) {
@@ -86,6 +114,7 @@ function addDepartment() {
                     start();
                 }
             );
+        });
             
 function addRole() {
     inquirer.prompt([
@@ -272,7 +301,7 @@ function updateRole() {
             }
         )
     })
-}
+}}
 // Start our server to listen to our requests
 app.listen(PORT, function() {
   console.log("Server listening on: http://localhost:" + PORT);
