@@ -57,6 +57,35 @@ function viewRoles() {
     })
 }
 
+function viewEmployees() {
+    connection.query("SELECT * FROM employee", function (err, results) {
+        if (err) throw err;
+        console.table(results);
+        start();
+    })
+}
+//add functions
+function addDepartment() {
+    inquirer.prompt([
+        {
+            name: "newDept",
+            type: "input",
+            message: "What department would you like to add?"
+        }
+    ])// wait for user input, then use input to create new table row
+        .then(function (answer) {
+            connection.query(
+                "INSERT INTO department SET ?",
+                {
+                    name: answer.newDept
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("Your new department has been created!");
+                    start();
+                }
+            );
+
 // Start our server to listen to our requests
 app.listen(PORT, function() {
   console.log("Server listening on: http://localhost:" + PORT);
