@@ -216,7 +216,62 @@ function insertEmployee(employeeData, newEmpRoleId, newEmpManagerId) {
             console.log("Your new employee was added successfully");
             start();
         }
+
     );
+}
+
+function updateRole() {
+    inquirer.prompt([
+        {
+            name: "whichEmp",
+            type: "list",
+            message: "Which employee would you like to update?",
+            choices: [
+                "Kane",
+                "Gillette",
+                "Krieger",
+                "Tunt"
+            ]
+        },
+        {
+            name: "whichRole",
+            type: "list",
+            message: "What will their new role be?",
+            choices: [
+                "Human Resources Officer",
+                "Accountant",
+                "Gadget Developer",
+                "Office Worker",
+                "Secret Agent"
+            ]
+        }
+    ]).then(function (answer) {
+        //same logic to get id from role
+        connection.query("SELECT id FROM ROLES WHERE title = ?",
+            [answer.whichRole], function (err, results) {
+                if (err) throw err;
+                let whichRoleId = results[0].id;
+                //then set new role targeting user choice employee (input = last_name)
+                connection.query(
+                    "UPDATE EMPLOYEES SET ? WHERE ?", [
+                    {
+                        role_id: whichRoleId
+                    },
+                    {
+                        last_name: answer.whichEmp
+                    }
+
+                ],
+
+                    function (err) {
+                        if (err) throw err;
+                        console.log("Your role was updated successfully!");
+                        start();
+                    }
+                );
+            }
+        )
+    })
 }
 // Start our server to listen to our requests
 app.listen(PORT, function() {
