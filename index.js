@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const console = require("console.table");
-const { start } = require("repl");
+
 
 //set the port
 const PORT = process.env.PORT || 8080;
@@ -66,7 +66,7 @@ function start() {
                 connection.end();
             }
         });
-    }
+    
         
 //functions for user options
 function viewDepartments() {
@@ -301,7 +301,7 @@ function updateRole() {
             }
         )
     })
-}}
+}}}
 // Start our server to listen to our requests
 app.listen(PORT, function() {
   console.log("Server listening on: http://localhost:" + PORT);
