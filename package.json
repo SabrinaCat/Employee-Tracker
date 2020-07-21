@@ -20,6 +20,7 @@
   "homepage": "https://github.com/SabrinaCat/Employee-Tracker#readme",
   "dependencies": {
     "console.table": "^0.10.0",
+    "express": "^4.17.1",
     "inquirer": "^7.3.2",
     "mysql": "^2.18.1",
     "repl": "^0.1.3"
