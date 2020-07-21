@@ -1,6 +1,9 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const console = require("console.table");
+const express = require("express");
+
+const app = express();
 
 
 //set the port
@@ -14,6 +17,15 @@ const connection = mysql.createConnection({
   password: "Sushicat1001",
   database: "employee_tracking"
 });
+// Sets up the Express app to handle data parsing
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Start our server to listen to our requests
+app.listen(PORT, function() {
+
+  });
+
 //console.log error or success
 connection.connect(function(err) {
   if (err) {
@@ -22,6 +34,9 @@ connection.connect(function(err) {
   }
   start();
 });
+
+
+
 //function to start user prompt questions
 function start() {
     inquirer
@@ -66,7 +81,7 @@ function start() {
                 connection.end();
             }
         });
-    
+    }   
         
 //functions for user options
 function viewDepartments() {
@@ -115,7 +130,7 @@ function addDepartment() {
                 }
             );
         });
-            
+    };           
 function addRole() {
     inquirer.prompt([
         {
@@ -301,9 +316,6 @@ function updateRole() {
             }
         )
     })
-}}}
-// Start our server to listen to our requests
-app.listen(PORT, function() {
-  console.log("Server listening on: http://localhost:" + PORT);
-});
+}
+
 
